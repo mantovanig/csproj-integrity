@@ -28,6 +28,8 @@ csproj.checkFiles(['Views/**/*.cshtml', 'Controllers/**/*.cs']);
 ### checkIntegrity
 This task check if all file included in the csproj file actually exist.
 
+![alt tag](http://mantovanig.it/media/csproj_task2.gif)
+
 Usage example
 ```js
 const csproj = require('csproj-integrity');
