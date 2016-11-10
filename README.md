@@ -3,6 +3,13 @@ Node module for check the visual studio solution integrity parsing the csproj fi
 
 You can use it with Grunt Plugin [grunt-csproj-integrity](https://github.com/mantovanig/grunt-csproj-integrity)
 
+## Install
+
+```
+$ npm install --save-dev csproj-integrity
+```
+
+
 The module has 2 tasks:
 
 ### checkFiles

@@ -1,6 +1,6 @@
 {
   "name": "csproj-integrity",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Check csproj file (Visual Studio) integrity",
   "keywords": [
     "csproj",
