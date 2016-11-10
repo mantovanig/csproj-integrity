@@ -1,5 +1,5 @@
 # csproj-integrity
-Node module for check the visual studio solution integrity parsing the file csproj.
+Node module for check the visual studio solution integrity parsing the csproj file.
 
 You can use it with Grunt Plugin [grunt-csproj-integrity](https://github.com/mantovanig/grunt-csproj-integrity)
 
@@ -30,3 +30,4 @@ csproj.checkIntegrity();
 ## TO DO
 - Unit test with TAPE
 - Gulp plugin
+- Update readme with examp report
