@@ -15,6 +15,8 @@ The module has 2 tasks:
 ### checkFiles
 This task takes an array of path and check if all files are included in the .csproj file.
 
+![alt tag](http://mantovanig.it/media/csproj.gif)
+
 Usage example
 ```js
 const csproj = require('csproj-integrity');
