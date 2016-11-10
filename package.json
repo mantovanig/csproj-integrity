@@ -1,6 +1,6 @@
 {
   "name": "csproj-integrity",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Check csproj file (Visual Studio) integrity",
   "keywords": [
     "csproj",
@@ -19,11 +19,7 @@
   "bin": {
     "checksolution": "cli.js"
   },
-  "author": {
-    "name": "mantovanig",
-    "email": "me@mantovanig.it",
-    "url": "http://mantovanig.it"
-  },
+  "author": "mantovanig",
   "license": "MIT",
   "dependencies": {
     "chalk": "^1.1.3",
