@@ -20,6 +20,11 @@
     "csproj": "cli/cli.js"
   },
   "author": "mantovanig",
+  "contributors": [{
+    "name": "G100g",
+    "email": "giorgio@g100g.net",
+    "url": "http://g100g.net"
+  }],
   "license": "MIT",
   "dependencies": {
     "chalk": "^1.1.3",
