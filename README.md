@@ -38,7 +38,27 @@ const csproj = require('csproj-integrity');
 csproj.checkIntegrity();
 ```
 
+## CLI commands
+
+Install **csproj** command globally with
+
+```bash
+    npm install -g csproj-integrity
+```
+
+To check integrity of .csproj file move to the root of the file and run
+
+```bash
+    $ csproj integrity
+```
+To check local files are include in your csproj file run
+
+```bash
+    $ csproj files Views/**/*.js Controllers/**/*.cs
+```
+
 ## TO DO
 - Unit test with TAPE
 - Gulp plugin
 - Update readme with examp report
+- CLI: Option to specify csproj file path
