@@ -42,16 +42,29 @@ var checksolution = {
                             reject('No item groups found in csprojFile');
                         }
 
+
                         fileIncluded = itemgroups
                             //Take only item groups <Compile> and <Content>
                             .filter( (item) => item.Compile || item.Content || false )
                             //Take only the object of itemgroup
-                            .map( (item) => item.Compile || item.Content )
+                            .map( (item) => {
+
+                              let a = [];
+
+                              if (item.Content) {
+                                a = a.concat(item.Content);
+                              }
+                              if (item.Compile) {
+                                a = a.concat(item.Compile);
+                              }
+
+                              return a;
+
+                            })
                             .reduce((fileIncludes, itemsArray) => {
                                 fileIncludes = itemsArray.map((item) => item.$.Include).concat(fileIncludes);
                                 return fileIncludes;
                             }, []);
-
 
                         resolve(fileIncluded);
                     });
@@ -69,6 +82,7 @@ var checksolution = {
     },
 
     findDiff(parent1, parent2) {
+
         return  _.difference( parent1.map(this.beautifyPath), parent2.map(this.beautifyPath));
     },
 
@@ -77,6 +91,9 @@ var checksolution = {
              (resolve) => {
 
                 globby(path).then((localfiles) => {
+
+                    log(chalk.white.bold("\n", ' Checking', localfiles.length, 'files'));
+
                     let diff = this.findDiff( localfiles, files);
                     resolve(diff);
                 });
@@ -98,7 +115,7 @@ var checksolution = {
 
     checkFiles(files) {
 
-        log(chalk.white.bold('# Run Task1'));
+        log(chalk.white.bold('# Check Files'), "\n");
 
         return this.parseCsproj()
             .then((fileIncludes) => {
@@ -123,7 +140,7 @@ var checksolution = {
     },
 
     checkIntegrity() {
-        log(chalk.white.bold('# Run Task2'));
+        log(chalk.white.bold('# Check Integrity'), "\n");
 
         return this.parseCsproj()
             .then((fileIncludes) => {
