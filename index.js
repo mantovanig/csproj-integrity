@@ -44,7 +44,7 @@ var checksolution = {
 
 
                         fileIncluded = itemgroups
-                            //Take only item groups <Compile> and <Content>
+                            //Take only item groups <Compile>, <Content> and <TypeScriptCompile>
                             .filter( (item) => item.Compile || item.Content || item.TypeScriptCompile || false )
                             //Take only the object of itemgroup
                             .map( (item) => {
