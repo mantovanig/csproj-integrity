@@ -45,7 +45,7 @@ var checksolution = {
 
                         fileIncluded = itemgroups
                             //Take only item groups <Compile> and <Content>
-                            .filter( (item) => item.Compile || item.Content || false )
+                            .filter( (item) => item.Compile || item.Content || item.TypeScriptCompile || false )
                             //Take only the object of itemgroup
                             .map( (item) => {
 
@@ -56,6 +56,9 @@ var checksolution = {
                               }
                               if (item.Compile) {
                                 a = a.concat(item.Compile);
+                              }
+                              if (item.TypeScriptCompile) {
+                                a = a.concat(item.TypeScriptCompile);
                               }
 
                               return a;
