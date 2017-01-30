@@ -157,6 +157,8 @@ var checksolution = {
                     log('');
                     log(chalk.white.bgGreen.bold('## OK! All files included exist! '));
                 }
+
+                return fileIncludes;
             })
             .catch(function(err) {
                 log(chalk.white.bgRed.bold(err));
