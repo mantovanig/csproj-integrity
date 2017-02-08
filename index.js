@@ -13,7 +13,8 @@ const path = require('path');
 const chalk = require('chalk');
 const log = console.log;
 
-/*----------- Define module -----------*/
+
+/*----------- Main module -----------*/
 var checksolution = {
 
     parseCsproj() {
@@ -22,11 +23,12 @@ var checksolution = {
         let cwd = process.cwd();
 
         let csproj = globby
-                                .sync(['*.csproj'])
-                                .map((e) => {
-                                    log( chalk.white.bgBlue.bold('File csproj: '), chalk.white.bold(e));
-                                    return this.beautifyPath(cwd + '/' + e);
-                                })
+                        .sync(['*.csproj'])
+                        .map((e) => {
+                            log( chalk.white.bgBlue.bold('File csproj: '), chalk.white.bold(e));
+                            return this.beautifyPath(cwd + '/' + e);
+                        })
+        log(csproj);
 
         if (!csproj || csproj.length > 0) {
 
@@ -65,7 +67,12 @@ var checksolution = {
 
                             })
                             .reduce((fileIncludes, itemsArray) => {
-                                fileIncludes = itemsArray.map((item) => item.$.Include).concat(fileIncludes);
+                                fileIncludes = itemsArray
+                                                    .map((item) => { 
+                                                        log(this.beautifyPath(item.$.Include));
+                                                        return item.$.Include;
+                                                    })
+                                                    .concat(fileIncludes);
                                 return fileIncludes;
                             }, []);
 
@@ -118,7 +125,7 @@ var checksolution = {
 
     checkFiles(files) {
 
-        log(chalk.white.bold('# Check Files'), "\n");
+        log(chalk.white.bold('# Check if files exist'), "\n");
 
         return this.parseCsproj()
             .then((fileIncludes) => {
@@ -142,13 +149,24 @@ var checksolution = {
 
     },
 
+    checkDuplicated(file, idx, files) {
+        return files.indexOf(file) !== idx;
+    },
+
     checkIntegrity() {
         log(chalk.white.bold('# Check Integrity'), "\n");
 
         return this.parseCsproj()
             .then((fileIncludes) => {
                 let fileNotFound = [];
+                let duplicatedFiles = [];
                 fileNotFound = fileIncludes.filter(this.checkExist);
+
+                log(chalk.white.bold('# Checking duplicated files'), "\n");
+                duplicatedFiles = fileIncludes.filter(this.checkDuplicated);
+
+                log("duplicati", duplicatedFiles);
+
                 if (!fileNotFound || fileNotFound.length > 0) {
                     log('');
                     log(chalk.white.bgRed.bold('## There are files included that not exist: '));
