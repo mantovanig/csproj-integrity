@@ -2,13 +2,15 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <ItemGroup>
-    <Compile Include="test/src/Controllers/testing.cs" />
+    <Compile Include="test/src/Controllers/SearchController.cs" />
 
   </ItemGroup>
   <ItemGroup>
-    <Content Include="test/src/Views/123.cshtml" />
-    <Content Include="test/src/Views/1234.cshtml" />
-    <Content Include="test/src/Views/1234.cshtml" />
+    <Content Include="test/src/Views/Home.cshtml" />
+    <Content Include="test/src/Views/Search.cshtml" />
+    <Content Include="test/src/Views/Search.cshtml" />
+    <Content Include="test/src/Views/Index.cshtml" />
+    <Content Include="test/src/Views/Item.cshtml" />
   </ItemGroup>
 
 

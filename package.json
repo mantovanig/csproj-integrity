@@ -10,7 +10,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "node test/tests.js"
+    "test": "node test/tests.js | tap-spec"
   },
   "repository": "mantovanig/csproj-integrity",
   "bugs": {

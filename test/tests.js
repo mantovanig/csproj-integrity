@@ -1,18 +1,24 @@
 'use strict';
 
-// const test = require('tape');
+const test = require('tape');
 const checksolution = require('../');
 
-// test('all file is included', function (t) {
+test('Check integrity', function (t) {
 
-    // checksolution
-    //       .checkFiles(['test/src/Views/**/*.cshtml'])
-    //       .then(function(result) {
-    //         console.log('eccoli' , result);
-    //         return result;
-    //       });
+    t.plan(3);
 
-checksolution.checkIntegrity();
+    checksolution.checkIntegrity()
+                    .then(function(res) {
+                        t.equal(res.length, 6, "Find 6 files in csproj");
 
+                        let notFound = res.filter(checksolution.checkExist);
 
-// });
+                        t.equal(notFound.length, 2, "2 file not found");
+
+                        let duplicated = res.filter(checksolution.checkDuplicated);
+
+                        t.equal(duplicated.length, 1, "Find 1 duplicated file");
+
+                    });
+
+});
