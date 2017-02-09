@@ -27,8 +27,7 @@ var checksolution = {
                         .map((e) => {
                             log( chalk.white.bgBlue.bold('File csproj: '), chalk.white.bold(e));
                             return this.beautifyPath(cwd + '/' + e);
-                        })
-        log(csproj);
+                        });
 
         if (!csproj || csproj.length > 0) {
 
@@ -68,10 +67,7 @@ var checksolution = {
                             })
                             .reduce((fileIncludes, itemsArray) => {
                                 fileIncludes = itemsArray
-                                                    .map((item) => { 
-                                                        log(this.beautifyPath(item.$.Include));
-                                                        return item.$.Include;
-                                                    })
+                                                    .map((item) => item.$.Include)
                                                     .concat(fileIncludes);
                                 return fileIncludes;
                             }, []);
@@ -118,7 +114,7 @@ var checksolution = {
                 // log(chalk.white.bold('exist', file));
                 return false;
             } catch (e) {
-            // It isn't accessible
+                // It isn't accessible
                 return true;
         }
     },
@@ -155,25 +151,35 @@ var checksolution = {
 
     checkIntegrity() {
         log(chalk.white.bold('# Check Integrity'), "\n");
+        
+        let status = true;
 
         return this.parseCsproj()
             .then((fileIncludes) => {
                 let fileNotFound = [];
                 let duplicatedFiles = [];
                 fileNotFound = fileIncludes.filter(this.checkExist);
-
-                log(chalk.white.bold('# Checking duplicated files'), "\n");
                 duplicatedFiles = fileIncludes.filter(this.checkDuplicated);
 
-                log("duplicati", duplicatedFiles);
-
                 if (!fileNotFound || fileNotFound.length > 0) {
+                    status = false;
                     log('');
                     log(chalk.white.bgRed.bold('## There are files included that not exist: '));
                     fileNotFound.map((e) => log(chalk.yellow.underline(e)));
-                } else {
                     log('');
-                    log(chalk.white.bgGreen.bold('## OK! All files included exist! '));
+                }
+
+                if(!duplicatedFiles || duplicatedFiles.length > 0) {
+                    status = false;
+                    log('');
+                    log(chalk.white.bgRed.bold('## There are duplicated files in csproj file: '));
+                    duplicatedFiles.map((e) => log(chalk.yellow.underline(e)));
+                    log('');
+                }
+
+                if(status) {
+                    log('');
+                    log(chalk.white.bgGreen.bold('## OK! csporj file integrity is good!'));                  
                 }
 
                 return fileIncludes;
