@@ -57,7 +57,7 @@ csproj.checkFiles(['Views/**/*.cshtml', 'Controllers/**/*.cs']);
 ```
 
 ## TO DO
-- Unit test with TAPE
-- Check of duplicated
-- Gulp plugin
-- CLI: Option to specify csproj file path
+[ ] Unit test with TAPE
+[x] Check of duplicated
+[ ] Gulp plugin
+[ ] CLI: Option to specify csproj file path

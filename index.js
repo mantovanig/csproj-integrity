@@ -128,6 +128,7 @@ var checksolution = {
                 return this.compareFiles(files, fileIncludes);
             })
             .then(function (result) {
+                
                 if (!result || result.length > 0) {
                     log('');
                     log(chalk.white.bgRed.bold('## Files that are not included: '));
