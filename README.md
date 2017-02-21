@@ -1,4 +1,4 @@
-# csproj-integrity  [![Build Status](https://travis-ci.org/mantovanig/csproj-integrity.svg?branch=master)](https://travis-ci.org/mantovanig/csproj-integrity)
+# csproj-integrity  [![Build Status](https://travis-ci.org/mantovanig/csproj-integrity.svg?branch=master)](https://travis-ci.org/mantovanig/csproj-integrity) [![dependencies Status](https://david-dm.org/mantovanig/csproj-integrity/status.svg)](https://david-dm.org/mantovanig/csproj-integrity)
 Node module for check the visual studio solution integrity parsing the csproj file.
 
 You can use it with Grunt Plugin [grunt-csproj-integrity](https://github.com/mantovanig/grunt-csproj-integrity)
