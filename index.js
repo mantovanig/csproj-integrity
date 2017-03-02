@@ -2,6 +2,8 @@
 
 /*=============================================>>>>>
 = Check VS Includes of Solution =
+
+= author: mantovanig =
 ===============================================>>>>>*/
 
 /*----------- Base require -----------*/
@@ -11,6 +13,7 @@ const xml2js = require('xml2js');
 const _ = require('lodash');
 const path = require('path');
 const chalk = require('chalk');
+const figures = require('figures');
 const log = console.log;
 
 
@@ -25,7 +28,7 @@ var checksolution = {
         let csproj = globby
                         .sync(['*.csproj'])
                         .map((e) => {
-                            log( chalk.white.bgBlue.bold('File csproj: '), chalk.white.bold(e));
+                            log( chalk.blue.bold(figures.info + ' File csproj: '), chalk.white.underline(e));
                             return this.beautifyPath(cwd + '/' + e);
                         });
 
@@ -121,7 +124,7 @@ var checksolution = {
 
     checkFiles(files) {
 
-        log(chalk.white.bold('# Check if files exist'), "\n");
+        log(chalk.white.bold(figures.bullet + ' Check if files exist'), "\n");
 
         return this.parseCsproj()
             .then((fileIncludes) => {
@@ -131,11 +134,13 @@ var checksolution = {
                 
                 if (!result || result.length > 0) {
                     log('');
-                    log(chalk.white.bgRed.bold('## Files that are not included: '));
+                    log(chalk.white.bgRed.bold(figures.warning + ' Files that are not included: '));
                     result.map((e) => log(chalk.yellow.underline(e)));
+                    log('');
                 } else {
                     log('');
-                    log(chalk.white.bgGreen.bold('## OK! All files are included! '));
+                    log(chalk.green.bold(figures.smiley + ' OK! All files are included! '));
+                    log('');
                 }
 
                 return result;
@@ -151,7 +156,7 @@ var checksolution = {
     },
 
     checkIntegrity() {
-        log(chalk.white.bold('# Check Integrity'), "\n");
+        log(chalk.white.bold(figures.bullet + ' Check Integrity'), "\n");
         
         let status = true;
 
@@ -165,7 +170,7 @@ var checksolution = {
                 if (!fileNotFound || fileNotFound.length > 0) {
                     status = false;
                     log('');
-                    log(chalk.white.bgRed.bold('## There are files included that not exist: '));
+                    log(chalk.white.bgRed.bold(figures.warning + ' There are files included that not exist: '));
                     fileNotFound.map((e) => log(chalk.yellow.underline(e)));
                     log('');
                 }
@@ -173,20 +178,21 @@ var checksolution = {
                 if(!duplicatedFiles || duplicatedFiles.length > 0) {
                     status = false;
                     log('');
-                    log(chalk.white.bgRed.bold('## There are duplicated files in csproj file: '));
+                    log(chalk.black.bgYellow.bold(figures.warning + ' There are duplicated files in csproj file: '));
                     duplicatedFiles.map((e) => log(chalk.yellow.underline(e)));
                     log('');
                 }
 
                 if(status) {
                     log('');
-                    log(chalk.white.bgGreen.bold('## OK! csporj file integrity is good!'));                  
+                    log(chalk.green.bold(figures.smiley + ' OK! csporj file integrity is good!'));     
+                    log('');             
                 }
 
                 return fileIncludes;
             })
             .catch(function(err) {
-                log(chalk.white.bgRed.bold(err));
+                log(chalk.white.bgRed.bold(figures.warning + " " + err));
             });
 
     }
