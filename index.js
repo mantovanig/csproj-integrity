@@ -137,16 +137,19 @@ var checksolution = {
                     log(chalk.white.bgRed.bold(figures.warning + ' Files that are not included: '));
                     result.map((e) => log(chalk.yellow.underline(e)));
                     log('');
+                    return result;
+                    process.exit(1);
                 } else {
                     log('');
                     log(chalk.green.bold(figures.smiley + ' OK! All files are included! '));
                     log('');
+                    return result;
                 }
 
-                return result;
             })
             .catch(function(err) {
                 log(chalk.white.bgRed.bold(err));
+                process.exit(1);
             });
 
     },
@@ -186,13 +189,17 @@ var checksolution = {
                 if(status) {
                     log('');
                     log(chalk.green.bold(figures.smiley + ' OK! csporj file integrity is good!'));     
-                    log('');             
+                    log('');
+                    return fileIncludes;
+                } else {
+                    return fileIncludes;
+                    process.exit(1);
                 }
 
-                return fileIncludes;
             })
             .catch(function(err) {
                 log(chalk.white.bgRed.bold(figures.warning + " " + err));
+                process.exit(1);
             });
 
     }
