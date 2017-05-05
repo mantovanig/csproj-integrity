@@ -147,7 +147,6 @@ var csprojIntegrity = {
 
             })
             .catch(function(err) {
-                log(chalk.white.bgRed.bold(err));
                 return Promise.reject(false);
             });
 
@@ -196,7 +195,6 @@ var csprojIntegrity = {
 
             })
             .catch(function(err) {
-                log(chalk.white.bgRed.bold(figures.warning + " " + err));
                 return Promise.reject(false);
             });
 
