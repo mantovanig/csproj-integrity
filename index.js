@@ -18,7 +18,7 @@ const log = console.log;
 
 
 /*----------- Main module -----------*/
-var checksolution = {
+var csprojIntegrity = {
 
     parseCsproj() {
         // find csprof file
@@ -137,8 +137,7 @@ var checksolution = {
                     log(chalk.white.bgRed.bold(figures.warning + ' Files that are not included: '));
                     result.map((e) => log(chalk.yellow.underline(e)));
                     log('');
-                    return result;
-                    process.exit(1);
+                    return Promise.reject(false);
                 } else {
                     log('');
                     log(chalk.green.bold(figures.smiley + ' OK! All files are included! '));
@@ -149,7 +148,7 @@ var checksolution = {
             })
             .catch(function(err) {
                 log(chalk.white.bgRed.bold(err));
-                process.exit(1);
+                return Promise.reject(false);
             });
 
     },
@@ -188,21 +187,20 @@ var checksolution = {
 
                 if(status) {
                     log('');
-                    log(chalk.green.bold(figures.smiley + ' OK! csporj file integrity is good!'));     
+                    log(chalk.green.bold(figures.smiley + ' OK! csporj file integrity is good!'));
                     log('');
                     return fileIncludes;
                 } else {
-                    return fileIncludes;
-                    process.exit(1);
+                    return Promise.reject(false);
                 }
 
             })
             .catch(function(err) {
                 log(chalk.white.bgRed.bold(figures.warning + " " + err));
-                process.exit(1);
+                return Promise.reject(false);
             });
 
     }
 };
 
-module.exports =  checksolution
+module.exports =  csprojIntegrity

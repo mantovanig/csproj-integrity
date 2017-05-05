@@ -63,7 +63,12 @@ test('Check integrity', function (t) {
 
     checksolution.checkIntegrity()
                     .then(res => {
-                        t.equal(res.length, 6, "The function return correctly " + 6 + " files.");
+                        console.log("res", res);
+                        t.equal(res.length, 2, "Find " + res.length + " that are not included");
+                        t.end();
+                    })
+                    .catch(err => {
+                        t.equal(err, false, "The function find errors");
                         t.end();
                     });
 
@@ -76,6 +81,10 @@ test('Check integrity', function (t) {
     checksolution.checkFiles("test/src/Controllers/**/*.cs")
                     .then(res => {
                         t.equal(res.length, 2, "Find " + res.length + " that are not included");
+                        t.end();
+                    })
+                    .catch(err => {
+                        t.equal(err, false, "The function find errors");
                         t.end();
                     })
 
