@@ -1,110 +1,23 @@
-"use strict";
-
 /*=============================================>>>>>
-= Check VS Includes of Solution =
+= Check the integrity of csproj file =
 
 = author: mantovanig =
 ===============================================>>>>>*/
 
-/*----------- Base require -----------*/
-const globby = require("globby");
+"use strict";
+
+// vendor modules
 const fs = require("fs");
-const xml2js = require("xml2js");
-const _ = require("lodash");
-const path = require("path");
 const chalk = require("chalk");
 const figures = require("figures");
 const log = console.log;
 
-/*----------- Main module -----------*/
-var csprojIntegrity = {
-  parseCsproj() {
-    let cwd = process.cwd();
+// libs modules
+const parseCsproj = require("./libs/parseCsproj");
+const compareFiles = require("./libs/compareFiles");
+const checkDuplicated = require("./libs/checkDuplicated");
 
-    let csproj = globby.sync(["*.csproj"]).map(e => {
-      log(
-        chalk.blue.bold(figures.info + " File csproj: "),
-        chalk.white.underline(e)
-      );
-      return this.beautifyPath(cwd + "/" + e);
-    });
-
-    if (!csproj || csproj.length > 0) {
-      var parser = new xml2js.Parser();
-      var fileIncluded = [];
-
-      return new Promise((resolve, reject) => {
-        fs.readFile(csproj[0], (err, data) => {
-          parser.parseString(data, (err, result) => {
-            let itemgroups = result.Project.ItemGroup;
-
-            if (!itemgroups || itemgroups.length === 0) {
-              reject("No item groups found in csprojFile");
-            }
-
-            fileIncluded = itemgroups
-              //Take only item groups <Compile>, <Content> and <TypeScriptCompile>
-              .filter(
-                item =>
-                  item.Compile ||
-                  item.Content ||
-                  item.TypeScriptCompile ||
-                  false
-              )
-              //Take only the object of itemgroup
-              .map(item => {
-                let a = [];
-
-                if (item.Content) {
-                  a = a.concat(item.Content);
-                }
-                if (item.Compile) {
-                  a = a.concat(item.Compile);
-                }
-                if (item.TypeScriptCompile) {
-                  a = a.concat(item.TypeScriptCompile);
-                }
-
-                return a;
-              })
-              .reduce((fileIncludes, itemsArray) => {
-                fileIncludes = itemsArray
-                  .map(item => item.$.Include)
-                  .concat(fileIncludes);
-                return fileIncludes;
-              }, []);
-
-            resolve(fileIncluded);
-          });
-        });
-      });
-    } else {
-      return Promise.reject("ERR: csproj file not found");
-    }
-  },
-
-  beautifyPath(filepath) {
-    return path.normalize(filepath);
-  },
-
-  findDiff(parent1, parent2) {
-    return _.difference(
-      parent1.map(this.beautifyPath),
-      parent2.map(this.beautifyPath)
-    );
-  },
-
-  compareFiles(path, files) {
-    return new Promise(resolve => {
-      globby(path).then(localfiles => {
-        log(chalk.white.bold("\n", " Checking", localfiles.length, "files"));
-
-        let diff = this.findDiff(localfiles, files);
-        resolve(diff);
-      });
-    });
-  },
-
+const csprojIntegrity = {
   checkExist(file) {
     try {
       fs.accessSync(file, fs.F_OK);
@@ -117,7 +30,7 @@ var csprojIntegrity = {
   checkFiles(files) {
     log(chalk.white.bold(figures.bullet + " Check if files exist"), "\n");
 
-    return this.parseCsproj()
+    return parseCsproj()
       .then(fileIncludes => {
         return this.compareFiles(files, fileIncludes);
       })
@@ -146,21 +59,17 @@ var csprojIntegrity = {
       });
   },
 
-  checkDuplicated(file, idx, files) {
-    return files.indexOf(file) !== idx;
-  },
-
   checkIntegrity() {
     log(chalk.white.bold(figures.bullet + " Check Integrity"), "\n");
 
     let status = true;
 
-    return this.parseCsproj()
+    return parseCsproj()
       .then(fileIncludes => {
         let fileNotFound = [];
         let duplicatedFiles = [];
         fileNotFound = fileIncludes.filter(this.checkExist);
-        duplicatedFiles = fileIncludes.filter(this.checkDuplicated);
+        duplicatedFiles = fileIncludes.filter(checkDuplicated);
 
         if (!fileNotFound || fileNotFound.length > 0) {
           status = false;
