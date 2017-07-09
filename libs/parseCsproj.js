@@ -1,3 +1,4 @@
+"use strict";
 
 // vendors modules
 const globby = require("globby");

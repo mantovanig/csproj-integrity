@@ -1,3 +1,5 @@
+"use strict";
+
 // vendors modules
 const _ = require("lodash");
 

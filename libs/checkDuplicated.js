@@ -1,3 +1,4 @@
+"use strict";
 
 /**
  * Check duplicated - function for filter
