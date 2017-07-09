@@ -21,10 +21,10 @@ module.exports = function() {
     let cwd = process.cwd();
 
     let csproj = globby.sync(["*.csproj"]).map(e => {
-      log(
-        chalk.blue.bold(figures.info + " File csproj: "),
-        chalk.white.underline(e)
-      );
+      // log(
+      //   chalk.blue.bold(figures.info + " File csproj: "),
+      //   chalk.white.underline(e)
+      // );
       return beautifyPath(cwd + "/" + e);
     });
 

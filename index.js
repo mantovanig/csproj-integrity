@@ -13,6 +13,7 @@ const figures = require("figures");
 const log = console.log;
 
 // libs modules
+const response = require("./libs/response");
 const parseCsproj = require("./libs/parseCsproj");
 const compareFiles = require("./libs/compareFiles");
 const checkDuplicated = require("./libs/checkDuplicated");
@@ -60,56 +61,42 @@ const csprojIntegrity = {
   },
 
   checkIntegrity() {
-    log(chalk.white.bold(figures.bullet + " Check Integrity"), "\n");
-
-    let status = true;
+    let status = {
+      notFound: false,
+      duplicated: false
+    };
 
     return parseCsproj()
       .then(fileIncludes => {
         let fileNotFound = [];
         let duplicatedFiles = [];
+
         fileNotFound = fileIncludes.filter(this.checkExist);
         duplicatedFiles = fileIncludes.filter(checkDuplicated);
 
-        if (!fileNotFound || fileNotFound.length > 0) {
-          status = false;
-          log("");
-          log(
-            chalk.white.bgRed.bold(
-              figures.warning + " There are files included that not exist: "
-            )
-          );
-          fileNotFound.map(e => log(chalk.yellow.underline(e)));
-          log("");
-        }
+        status.notFound =
+          !fileNotFound || fileNotFound.length > 0 ? true : false;
 
-        if (!duplicatedFiles || duplicatedFiles.length > 0) {
-          status = false;
-          log("");
-          log(
-            chalk.black.bgYellow.bold(
-              figures.warning + " There are duplicated files in csproj file: "
-            )
-          );
-          duplicatedFiles.map(e => log(chalk.yellow.underline(e)));
-          log("");
-        }
+        status.duplicated =
+          !duplicatedFiles || duplicatedFiles.length > 0 ? true : false;
 
-        if (status) {
-          log("");
-          log(
-            chalk.green.bold(
-              figures.smiley + " OK! csporj file integrity is good!"
-            )
+        if (status.duplicated || status.notFound) {
+          return Promise.resolve(
+            response("error", "There are some problems in your csproj file", {
+              fileNotFound,
+              duplicatedFiles
+            })
           );
-          log("");
-          return fileIncludes;
         } else {
-          return Promise.reject(false);
+          return Promise.resolve(
+            response("success", "OK! Your csproj file is good!", fileIncludes)
+          );
         }
       })
       .catch(function(err) {
-        return Promise.reject(false);
+        return Promise.resolve(
+          response("fail", "Failing during checking", err)
+        );
       });
   }
 };

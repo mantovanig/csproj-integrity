@@ -52,14 +52,14 @@ test("Check duplicated", function(t) {
   t.end();
 });
 
-test("Check integrity", function(t) {
+test.only("Check integrity", function(t) {
   csprojIntegrity.parseCsproj = parseCsprojMocked;
 
   csprojIntegrity
     .checkIntegrity()
     .then(res => {
-      console.log("res", res);
-      t.equal(res.length, 2, "Find " + res.length + " that are not included");
+      let response = JSON.parse(res);
+      t.equal(response.data.fileNotFound.length, 2, "Find " + response.data.fileNotFound.length + " files that are not included");
       t.end();
     })
     .catch(err => {
@@ -68,7 +68,7 @@ test("Check integrity", function(t) {
     });
 });
 
-test("Check integrity", function(t) {
+test("Check files", function(t) {
   csprojIntegrity.parseCsproj = parseCsprojMocked;
 
   csprojIntegrity
