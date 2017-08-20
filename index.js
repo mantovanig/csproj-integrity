@@ -8,9 +8,6 @@
 
 // vendor modules
 const fs = require("fs");
-const chalk = require("chalk");
-const figures = require("figures");
-const log = console.log;
 
 // libs modules
 const response = require("./libs/response");
@@ -29,34 +26,25 @@ const csprojIntegrity = {
   },
 
   checkFiles(files) {
-    log(chalk.white.bold(figures.bullet + " Check if files exist"), "\n");
-
     return parseCsproj()
       .then(fileIncludes => {
-        return this.compareFiles(files, fileIncludes);
+        return compareFiles(files, fileIncludes);
       })
       .then(function(result) {
         if (!result || result.length > 0) {
-          log("");
-          log(
-            chalk.white.bgRed.bold(
-              figures.warning + " Files that are not included: "
-            )
+          return Promise.resolve(
+            response("error", "Files that are not included:", result)
           );
-          result.map(e => log(chalk.yellow.underline(e)));
-          log("");
-          return Promise.reject(false);
         } else {
-          log("");
-          log(
-            chalk.green.bold(figures.smiley + " OK! All files are included! ")
+          return Promise.resolve(
+            response("success", "OK! All files are included!", result)
           );
-          log("");
-          return result;
         }
       })
       .catch(function(err) {
-        return Promise.reject(false);
+        return Promise.resolve(
+          response("fail", "Failing during checking", err)
+        );
       });
   },
 

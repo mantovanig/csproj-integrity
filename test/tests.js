@@ -52,7 +52,7 @@ test("Check duplicated", function(t) {
   t.end();
 });
 
-test.only("Check integrity", function(t) {
+test("Check integrity", function(t) {
   csprojIntegrity.parseCsproj = parseCsprojMocked;
 
   csprojIntegrity
@@ -74,7 +74,8 @@ test("Check files", function(t) {
   csprojIntegrity
     .checkFiles("test/src/Controllers/**/*.cs")
     .then(res => {
-      t.equal(res.length, 2, "Find " + res.length + " that are not included");
+      let response = JSON.parse(res);
+      t.equal(response.data.length, 2, "Find " + response.data.length + " that are not included");
       t.end();
     })
     .catch(err => {

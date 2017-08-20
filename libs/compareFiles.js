@@ -1,7 +1,6 @@
 "use strict";
 
 const globby = require("globby");
-const chalk = require("chalk");
 
 const getDiff = require("./getDiff");
 
@@ -16,8 +15,6 @@ const getDiff = require("./getDiff");
 module.exports = function(path, files) {
     return new Promise(resolve => {
       globby(path).then(localfiles => {
-        log(chalk.white.bold("\n", " Checking", localfiles.length, "files"));
-
         let diff = getDiff(localfiles, files);
         resolve(diff);
       });
