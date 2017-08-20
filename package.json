@@ -16,9 +16,6 @@
   "bugs": {
     "url": "https://github.com/mantovanig/grunt-csproj-integrity/issues"
   },
-  "bin": {
-    "csproj": "cli/cli.js"
-  },
   "author": "mantovanig",
   "contributors": [
     {
