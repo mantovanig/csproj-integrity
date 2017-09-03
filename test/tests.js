@@ -60,6 +60,7 @@ test("Check integrity", function(t) {
     .then(res => {
       let response = JSON.parse(res);
       t.equal(response.data.fileNotFound.length, 2, "Find " + response.data.fileNotFound.length + " files that are not included");
+      t.equal(response.status, "error", "Status is error!");
       t.end();
     })
     .catch(err => {
@@ -76,6 +77,7 @@ test("Check files", function(t) {
     .then(res => {
       let response = JSON.parse(res);
       t.equal(response.data.length, 2, "Find " + response.data.length + " that are not included");
+      t.equal(response.status, "error", "Status is error!")
       t.end();
     })
     .catch(err => {

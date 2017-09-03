@@ -9,7 +9,7 @@
 // vendor modules
 const fs = require("fs");
 
-// libs modules
+// sub modules
 const response = require("./libs/response");
 const parseCsproj = require("./libs/parseCsproj");
 const compareFiles = require("./libs/compareFiles");

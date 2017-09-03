@@ -19,7 +19,7 @@ This task takes an array of path and check if all files are included in the .csp
 `Arguments:` [string / array] - the globby path of files to check.
 
 Output JSON
-```json
+```js
 {
     "status": [string] ["success", "error", "fail"],
     "message": [string],
@@ -51,7 +51,7 @@ This task check if all file included in the csproj file actually exist.
 `No arguments.`
 
 Output JSON
-```json
+```js
 {
     "status": [string] ["success", "error", "fail"],
     "message": [string],
@@ -82,4 +82,4 @@ csproj
 - [x] Unit test with TAPE
 - [x] Check of duplicated
 - [ ] Gulp plugin
-- [ ] CLI: Option to specify csproj file path
+- [ ] Rewrite using async / await
