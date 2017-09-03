@@ -2,65 +2,84 @@
 [![Build Status](https://travis-ci.org/mantovanig/csproj-integrity.svg?branch=master)](https://travis-ci.org/mantovanig/csproj-integrity) [![dependencies Status](https://david-dm.org/mantovanig/csproj-integrity/status.svg)](https://david-dm.org/mantovanig/csproj-integrity)
 ___
 
-Node module for check the visual studio solution integrity parsing the csproj file.
+Node library for check the visual studio solution integrity parsing the csproj file.
 
 You can use it with Grunt Plugin [grunt-csproj-integrity](https://github.com/mantovanig/grunt-csproj-integrity)
 
-
-## CLI commands
-
-Install **csproj** command globally with
-
+## Install
 ```bash
-    npm install -g csproj-integrity
+    npm install csproj-integrity --save-dev
 ```
 
-To check integrity of .csproj file move to the root of the file and run
-
-```bash
-    $ csproj integrity
-```
-To check local files are include in your csproj file run
-
-```bash
-    $ csproj files Views/**/*.js Controllers/**/*.cs
-```
-
-
+## API
 
 ### **checkFiles**
 This task takes an array of path and check if all files are included in the .csproj file.
 
-![alt tag](docs/gif/csprojFiles.gif)
+`Arguments:` [string / array] - the globby path of files to check.
 
+Output JSON
+```js
+{
+    "status": [string] ["success", "error", "fail"],
+    "message": [string],
+    "data": [object]
+}
+```
 
+In case of **success** the data is empty.
+
+Usage example
+```js
+const csproj = require('csproj-integrity');
+
+csproj
+.checkFiles(['Views/**/*.cshtml', 'Controllers/**/*.cs'])
+.then(res => {
+    let response = JSON.parse(res);
+
+    // your code
+})
+.catch(err => {
+    console.log(err.message);
+});
+```
 
 ### **checkIntegrity**
 This task check if all file included in the csproj file actually exist.
 
-![alt tag](docs/gif/csprojIntegrity.gif)
+`No arguments.`
 
-
-
-## As Library
-
+Output JSON
+```js
+{
+    "status": [string] ["success", "error", "fail"],
+    "message": [string],
+    "data": [object]
+}
 ```
-$ npm install --save-dev csproj-integrity
-```
 
+If case of success the data is all file founded in csproj file.
 
 Usage example
 ```js
 const csproj = require('csproj-integrity');
 
 
-csproj.checkIntegrity();
+csproj
+.checkIntegrity()
+.then(res => {
+    let response = JSON.parse(res);
 
-csproj.checkFiles(['Views/**/*.cshtml', 'Controllers/**/*.cs']);
+    // your code
+})
+.catch(err => {
+    console.log(err.message);
+});
 ```
 
 ## TO DO
 - [x] Unit test with TAPE
 - [x] Check of duplicated
 - [ ] Gulp plugin
-- [ ] CLI: Option to specify csproj file path
+- [ ] Rewrite using async / await
