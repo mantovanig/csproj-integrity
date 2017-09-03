@@ -58,8 +58,9 @@ test("Check integrity", function(t) {
   csprojIntegrity
     .checkIntegrity()
     .then(res => {
-      console.log("res", res);
-      t.equal(res.length, 2, "Find " + res.length + " that are not included");
+      let response = JSON.parse(res);
+      t.equal(response.data.fileNotFound.length, 2, "Find " + response.data.fileNotFound.length + " files that are not included");
+      t.equal(response.status, "error", "Status is error!");
       t.end();
     })
     .catch(err => {
@@ -68,13 +69,15 @@ test("Check integrity", function(t) {
     });
 });
 
-test("Check integrity", function(t) {
+test("Check files", function(t) {
   csprojIntegrity.parseCsproj = parseCsprojMocked;
 
   csprojIntegrity
     .checkFiles("test/src/Controllers/**/*.cs")
     .then(res => {
-      t.equal(res.length, 2, "Find " + res.length + " that are not included");
+      let response = JSON.parse(res);
+      t.equal(response.data.length, 2, "Find " + response.data.length + " that are not included");
+      t.equal(response.status, "error", "Status is error!")
       t.end();
     })
     .catch(err => {

@@ -4,13 +4,9 @@
 const globby = require("globby");
 const fs = require("fs");
 const xml2js = require("xml2js");
-const chalk = require("chalk");
-const figures = require("figures");
 
 // libs modules
 const beautifyPath = require("./beautifyPath");
-
-const log = console.log;
 
 /**
  * Parse csproj file
@@ -21,10 +17,6 @@ module.exports = function() {
     let cwd = process.cwd();
 
     let csproj = globby.sync(["*.csproj"]).map(e => {
-      log(
-        chalk.blue.bold(figures.info + " File csproj: "),
-        chalk.white.underline(e)
-      );
       return beautifyPath(cwd + "/" + e);
     });
 
