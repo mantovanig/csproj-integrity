@@ -4,6 +4,7 @@
 const globby = require("globby");
 const fs = require("fs");
 const xml2js = require("xml2js");
+const path = require("path");
 
 // libs modules
 const beautifyPath = require("./beautifyPath");
@@ -20,7 +21,7 @@ module.exports = function() {
       return beautifyPath(cwd + "/" + e);
     });
 
-    if (!csproj || csproj.length > 0) {
+    if (csproj && csproj.length > 0) {
       var parser = new xml2js.Parser();
       var fileIncluded = [];
 
@@ -60,11 +61,15 @@ module.exports = function() {
               })
               .reduce((fileIncludes, itemsArray) => {
                 fileIncludes = itemsArray
-                  .map(item => item.$.Include)
+                  .map(item => {
+                    let include = item.$.Include;
+                    include = include.replace(/\\/g, path.sep); //normalize on *nix
+                    return include;
+                  })
                   .concat(fileIncludes);
+
                 return fileIncludes;
               }, []);
-
             resolve(fileIncluded);
           });
         });
