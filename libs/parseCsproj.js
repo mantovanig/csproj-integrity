@@ -64,7 +64,7 @@ module.exports = function() {
                   .map(item => {
                     let include = item.$.Include;
                     include = include.replace(/\\/g, path.sep); //normalize on *nix
-                    return include;
+                    return unescape(include);
                   })
                   .concat(fileIncludes);
 
